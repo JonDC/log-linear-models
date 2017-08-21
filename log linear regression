@@ -1,0 +1,89 @@
+library (foreign) #load foreign library to import file formats
+
+getwd()
+EES14 <- read.csv( "C:/Users/User/Desktop/multivar project/ion_recode.csv")# my file format was csv
+summary(EES14) # filename was EES14
+
+# you should try to fit a model like in this example. 'lost_job' and income_decrease' etc were variables from within the table
+mytable <- xtabs( ~ EES14$Voted + EES14$lost_job + EES14$income_decrease + EES14$economy_better, data = EES14)
+
+# just do these (there's no need to get into why they're needed)
+summary(mytable)
+ftable(mytable)
+head(mytable)
+
+# these are the countries for which I chose to model. needless to say there was a lot of p fishing :)
+
+SK <- subset(EES14, countrycode== "Slovakia") #SK
+NL <- subset(EES14, countrycode=="The Netherlands") #NL
+HU <- subset(EES14, countrycode=="Hungary") #HU
+SE <- subset(EES14, countrycode=="Sweden") #FI
+DE <- subset(EES14, countrycode=="Germany") #DE
+RO <- subset(EES14, countrycode=="Romania") #RO
+AT <- subset(EES14, countrycode=="Austria") #AT
+BG <- subset(EES14, countrycode=="Bulgaria") #BG
+CZ <- subset(EES14, countrycode=="Czech Republic") #CZ
+IR <- subset(EES14, countrycode=="Ireland") #IR
+
+# essentially you create a minitable for any country. This will take all the observations that \n
+# \n have the SK (in this case) code and stores it as a table together with the indicated \n
+
+SKtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = SK)
+summary(SKtable)
+# then you create the model. Mine had 4 varaible - c(1,4) - but the explanatory ones were c(2,3,4)
+model2SK <- loglin(SKtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+# then you test the model fit and p value
+1-pchisq(model2SK$lrt, model2SK$df)
+
+#then I did it for all countries that I had chosen. So you should repeat however many times you need
+NLtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = NL)
+summary(NLtable)
+model2NL <- loglin(NLtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2NL$lrt, model2NL$df)
+
+HUtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = HU)
+summary(NLtable)
+model2HU <- loglin(HUtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2HU$lrt, model2HU$df)
+
+SEtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = SE)
+summary(SEtable)
+model2SE <- loglin(SEtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2SE$lrt, model2SE$df)
+
+ROtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = RO)
+summary(ROtable)
+model2RO <- loglin(ROtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2RO$lrt, model2RO$df)
+
+DEtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = DE)
+summary(DEtable)
+model2DE <- loglin(DEtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2DE$lrt, model2DE$df)
+
+BGtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = BG)
+summary(BGtable)
+model2BG <- loglin(BGtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2BG$lrt, model2BG$df)
+
+ATtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = AT)
+summary(ATtable)
+model2AT <- loglin(ATtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2AT$lrt, model2AT$df)
+
+IRtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = IR)
+summary(IRtable)
+model2IR <- loglin(IRtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2IR$lrt, model2IR$df)
+
+CZtable <- xtabs( ~ Voted + lost_job + income_decrease + economy_better, data = CZ)
+summary(CZtable)
+model2CZ <- loglin(CZtable, list(c(1, 4), c(2,3,4)), param=TRUE, fit=TRUE)
+1-pchisq(model2CZ$lrt, model2CZ$df)
+
+
+exp(model2HU$param$Voted.economy_better) ^ 2
+exp(model2SK$param$Voted.economy_better) ^ 2
+exp(model2SE$param$Voted.economy_better) ^ 2
+exp(model2NL$param$Voted.economy_better) ^ 2
+
