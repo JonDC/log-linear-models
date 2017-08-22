@@ -12,7 +12,7 @@ summary(mytable)
 ftable(mytable)
 head(mytable)
 
-# these are the countries for which I chose to model. needless to say there was a lot of p fishing :)
+# these are the countries for which I chose to model
 
 SK <- subset(EES14, countrycode== "Slovakia") #SK
 NL <- subset(EES14, countrycode=="The Netherlands") #NL
